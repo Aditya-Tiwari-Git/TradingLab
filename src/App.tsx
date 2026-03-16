@@ -1,4 +1,5 @@
-﻿import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import type { ReactElement } from 'react'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import { useAuth } from './hooks/useAuth'
 import { AuthPage } from './pages/AuthPage'
@@ -17,7 +18,7 @@ import { Settings } from './pages/Settings'
 import { Calculator } from './pages/Calculator'
 import { Guide } from './pages/Guide'
 
-const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
+const ProtectedRoute = ({ children }: { children: ReactElement }) => {
   const { user, loading } = useAuth()
   if (loading) {
     return <div className="flex min-h-screen items-center justify-center text-sm text-slate-400">Loading...</div>
@@ -161,3 +162,4 @@ const App = () => {
 }
 
 export default App
+
