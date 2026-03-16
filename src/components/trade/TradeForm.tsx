@@ -151,20 +151,20 @@ export const TradeForm = ({ strategies, initial, onSave, onCancel }: TradeFormPr
       return
     }
 
-    const cleaned: Partial<Trade> = {}
+    const cleaned: Record<string, unknown> = {}
     Object.entries(trade).forEach(([key, value]) => {
       if (key === 'tags') return
       if (value === undefined) return
       if (typeof value === 'number' && Number.isNaN(value)) {
-        cleaned[key as keyof Trade] = null
+        cleaned[key] = null
         return
       }
-      cleaned[key as keyof Trade] = value as never
+      cleaned[key] = value
     })
 
     setLoading(true)
     try {
-      await onSave(cleaned, tags)
+      await onSave(cleaned as Partial<Trade>, tags)
     } catch (err) {
       const message =
         err instanceof Error

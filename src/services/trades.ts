@@ -71,24 +71,32 @@ export const deleteTradeImage = async (id: string) => {
   if (error) throw error
 }
 
-export const fetchTagsForTrade = async (tradeId: string) => {
+export const fetchTagsForTrade = async (tradeId: string): Promise<{ id: string; name: string }[]> => {
   const { data, error } = await supabase
     .from('trade_tags')
     .select('tags ( id, name )')
     .eq('trade_id', tradeId)
   if (error) throw error
-  return (data ?? []).map((row) => row.tags)
+  const rows = (data ?? []) as { tags: { id: string; name: string } | { id: string; name: string }[] | null }[]
+  return rows.flatMap((row) => {
+    if (!row.tags) return []
+    return Array.isArray(row.tags) ? row.tags : [row.tags]
+  })
 }
 
-export const fetchTradeTagsMap = async () => {
+export const fetchTradeTagsMap = async (): Promise<Record<string, string[]>> => {
   const { data, error } = await supabase
     .from('trade_tags')
     .select('trade_id, tags ( name )')
   if (error) throw error
   const map: Record<string, string[]> = {}
-  data?.forEach((row: { trade_id: string; tags: { name: string } }) => {
+  const rows = (data ?? []) as { trade_id: string; tags: { name: string } | { name: string }[] | null }[]
+  rows.forEach((row) => {
     if (!map[row.trade_id]) map[row.trade_id] = []
-    if (row.tags?.name) map[row.trade_id].push(row.tags.name)
+    const tags = row.tags ? (Array.isArray(row.tags) ? row.tags : [row.tags]) : []
+    tags.forEach((tag) => {
+      if (tag?.name) map[row.trade_id].push(tag.name)
+    })
   })
   return map
 }

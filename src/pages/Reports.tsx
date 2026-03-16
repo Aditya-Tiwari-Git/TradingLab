@@ -65,6 +65,8 @@ const operatorsByType: Record<FieldType, { label: string; value: string }[]> = {
   ],
 }
 
+const getTradeField = (trade: Trade, field: string) => (trade as unknown as Record<string, unknown>)[field]
+
 const toCsv = (trades: Trade[]) => {
   const headers = [
     'date',
@@ -88,7 +90,7 @@ const toCsv = (trades: Trade[]) => {
   const rows = trades.map((trade) =>
     headers
       .map((header) => {
-        const value = (trade as Record<string, unknown>)[header]
+        const value = getTradeField(trade, header)
         return value === null || value === undefined ? '' : String(value)
       })
       .join(',')
@@ -105,7 +107,18 @@ export const Reports = () => {
     { id: crypto.randomUUID(), field: 'asset', operator: 'contains', value: '' },
   ])
   const [appliedFilters, setAppliedFilters] = useState<FilterRow[]>(draftFilters)
-  const [previewColumns, setPreviewColumns] = useState(['date', 'asset', 'direction', 'result', 'profit_loss'])
+  const [previewColumns, setPreviewColumns] = useState([
+    'date',
+    'asset',
+    'direction',
+    'result',
+    'profit_loss',
+    'rr_ratio',
+    'entry_price',
+    'exit_price',
+    'stop_loss',
+    'position_size',
+  ])
 
   useEffect(() => {
     fetchTrades().then(setTrades)
@@ -118,7 +131,7 @@ export const Reports = () => {
     const matchesFilter = (trade: Trade, filter: FilterRow) => {
       const fieldDef = filterFields.find((field) => field.id === filter.field)
       if (!fieldDef) return true
-      const raw = (trade as Record<string, unknown>)[filter.field]
+      const raw = getTradeField(trade, filter.field)
       const value = filter.value.trim()
 
       if (fieldDef.type === 'number') {
@@ -388,7 +401,27 @@ export const Reports = () => {
             </p>
           </div>
           <div className="flex flex-wrap gap-2 text-xs text-slate-300">
-            {['date', 'asset', 'direction', 'result', 'profit_loss', 'timeframe', 'strategy_id'].map((col) => (
+            {[
+              'date',
+              'asset',
+              'direction',
+              'result',
+              'profit_loss',
+              'rr_ratio',
+              'entry_price',
+              'exit_price',
+              'stop_loss',
+              'position_size',
+              'risk_per_trade',
+              'timeframe',
+              'strategy_id',
+              'setup_type',
+              'trade_code',
+              'emotional_state',
+              'rule_followed',
+              'mistake_category',
+              'created_at',
+            ].map((col) => (
               <label key={col} className="flex items-center gap-2 rounded-full border border-bg-700/70 bg-bg-900/60 px-3 py-1">
                 <input
                   type="checkbox"
@@ -421,7 +454,7 @@ export const Reports = () => {
                 <tr key={trade.id} className="hover:bg-bg-900/60">
                   {previewColumns.map((col) => (
                     <td key={`${trade.id}-${col}`} className="px-4 py-3 text-slate-300">
-                      {String((trade as Record<string, unknown>)[col] ?? '--')}
+                      {String(getTradeField(trade, col) ?? '--')}
                     </td>
                   ))}
                 </tr>
