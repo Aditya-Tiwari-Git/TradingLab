@@ -46,17 +46,17 @@ export const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
   return (
     <motion.aside
       initial={false}
-      animate={{ width: collapsed ? 86 : 280 }}
+      animate={{ width: collapsed ? 112 : 280 }}
       transition={{ type: 'spring', stiffness: 260, damping: 30 }}
       className="relative flex h-screen flex-col overflow-y-auto overflow-x-visible border-r border-bg-700/70 bg-bg-900/80 px-4 py-6 backdrop-blur"
     >
       {collapsed ? (
         <button
           onClick={onToggle}
-          className="absolute -right-3 top-24 flex h-8 w-8 items-center justify-center rounded-full border border-bg-700/70 bg-bg-900/80 text-slate-400 shadow-card transition hover:border-accent-400/60 hover:text-slate-100"
+          className="absolute right-2 top-24 z-30 flex h-10 w-10 items-center justify-center rounded-full border border-accent-400/60 bg-bg-900 text-accent-200 shadow-[0_10px_30px_rgba(59,130,246,0.35)] transition hover:border-accent-300 hover:text-white"
           aria-label="Expand sidebar"
         >
-          <ChevronRight size={16} />
+          <ChevronRight size={18} />
         </button>
       ) : null}
       <div className="mb-8 flex items-center justify-between">
@@ -92,7 +92,7 @@ export const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
         <button
           onClick={onToggle}
           className={clsx(
-            'flex items-center justify-center gap-2 rounded-xl border border-bg-700/70 px-3 py-2 text-xs text-slate-400 transition hover:border-accent-400/60 hover:text-slate-200',
+            'flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-xl border border-bg-700/70 px-3 py-2 text-xs text-slate-400 transition hover:border-accent-400/60 hover:text-slate-200',
             !collapsed && 'hidden'
           )}
         >
@@ -101,14 +101,14 @@ export const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
         </button>
         <a
           href="mailto:aditiw.work@gmail.com"
-          className="flex items-center justify-center gap-2 rounded-xl border border-bg-700/70 px-3 py-2 text-xs text-slate-400 transition hover:border-accent-400/60 hover:text-slate-200"
+          className="flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-xl border border-bg-700/70 px-3 py-2 text-xs text-slate-400 transition hover:border-accent-400/60 hover:text-slate-200"
         >
           <Mail size={16} />
           Contact Us
         </a>
         <button
           onClick={() => signOut()}
-          className="flex items-center justify-center gap-2 rounded-xl border border-bg-700/70 px-3 py-2 text-xs text-slate-400 transition hover:border-accent-400/60 hover:text-slate-200"
+          className="flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-xl border border-bg-700/70 px-3 py-2 text-xs text-slate-400 transition hover:border-accent-400/60 hover:text-slate-200"
         >
           Sign out
         </button>

@@ -8,6 +8,7 @@ import { useTheme } from '../hooks/useTheme'
 export const AuthPage = () => {
   const { signIn, signUp, signInWithGoogle } = useAuth()
   const { theme, toggleTheme } = useTheme()
+  const googleEnabled = false
   const [mode, setMode] = useState<'signin' | 'signup'>('signin')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -64,7 +65,7 @@ export const AuthPage = () => {
             </p>
             <div className="mt-8 grid gap-4 text-xs text-slate-400">
               <div className="rounded-2xl border border-bg-800/70 bg-bg-900/60 p-4">
-                <p className="text-slate-300">Equity curve, expectancy, drawdown — all in one view.</p>
+                <p className="text-slate-300">Equity curve, expectancy, drawdown -- all in one view.</p>
               </div>
               <div className="rounded-2xl border border-bg-800/70 bg-bg-900/60 p-4">
                 <p className="text-slate-300">Tag setups, capture mistakes, and refine your playbook weekly.</p>
@@ -92,14 +93,18 @@ export const AuthPage = () => {
           </div>
 
           <form className="mt-8 flex flex-col gap-4" onSubmit={handleSubmit}>
-            <Button type="button" variant="secondary" onClick={() => signInWithGoogle()}>
-              Continue with Google
-            </Button>
-            <div className="flex items-center gap-3 text-xs text-slate-500">
-              <span className="h-px flex-1 bg-bg-800" />
-              or use email
-              <span className="h-px flex-1 bg-bg-800" />
-            </div>
+            {googleEnabled ? (
+              <>
+                <Button type="button" variant="secondary" onClick={() => signInWithGoogle()}>
+                  Continue with Google
+                </Button>
+                <div className="flex items-center gap-3 text-xs text-slate-500">
+                  <span className="h-px flex-1 bg-bg-800" />
+                  or use email
+                  <span className="h-px flex-1 bg-bg-800" />
+                </div>
+              </>
+            ) : null}
             <Input label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
             <Input label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
             {error ? <p className="text-xs text-red-400">{error}</p> : null}

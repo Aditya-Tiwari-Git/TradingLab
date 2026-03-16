@@ -15,13 +15,14 @@ export const MonthlyBar = ({ data }: { data: { month: string; value: number }[] 
           {settings.showTooltips ? (
             <Tooltip
               contentStyle={{
-                background: 'rgba(var(--bg-900), 0.96)',
-                border: '1px solid rgba(var(--bg-700), 0.7)',
-                borderRadius: '10px',
+                background: 'transparent',
+                border: 'none',
+                boxShadow: 'none',
                 color: '#e2e8f0',
               }}
               labelStyle={{ color: 'rgb(var(--muted))', fontSize: 12 }}
               itemStyle={{ color: '#e2e8f0' }}
+              cursor={{ fill: 'transparent' }}
             />
           ) : null}
           <Bar dataKey="value" fill="rgb(var(--chart-secondary))" radius={[6, 6, 2, 2]} />
