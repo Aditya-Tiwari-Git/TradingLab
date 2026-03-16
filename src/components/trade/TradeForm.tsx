@@ -24,6 +24,8 @@ export const TradeForm = ({ strategies, initial, onSave, onCancel }: TradeFormPr
   const [trade, setTrade] = useState<Partial<Trade>>({ ...defaultTrade, ...initial })
   const [tags, setTags] = useState<string[]>(initial?.tags ?? [])
   const [loading, setLoading] = useState(false)
+  const [showAdvanced, setShowAdvanced] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const parseNumber = (value: string) => (value === '' ? null : Number(value))
 
@@ -37,15 +39,25 @@ export const TradeForm = ({ strategies, initial, onSave, onCancel }: TradeFormPr
   }
 
   const handleSubmit = async () => {
+    setError(null)
+    if (!trade.asset || !trade.date || !trade.direction) {
+      setError('Please fill Asset, Date, and Direction before saving.')
+      return
+    }
     setLoading(true)
-    await onSave(trade, tags)
-    setLoading(false)
+    try {
+      await onSave(trade, tags)
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Failed to save trade. Check your connection and required fields.'
+      setError(message)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
     <div className="flex flex-col gap-4">
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        <Input label="Trade ID" value={trade.trade_code ?? ''} onChange={(e) => updateField('trade_code', e.target.value)} />
         <Input label="Date" type="date" value={trade.date ?? ''} onChange={(e) => updateField('date', e.target.value)} />
         <Input label="Asset" value={trade.asset ?? ''} onChange={(e) => updateField('asset', e.target.value)} />
         <Select label="Direction" value={trade.direction ?? 'Long'} onChange={(e) => updateField('direction', e.target.value)}>
@@ -64,7 +76,6 @@ export const TradeForm = ({ strategies, initial, onSave, onCancel }: TradeFormPr
             </option>
           ))}
         </Select>
-        <Input label="Setup Type" value={trade.setup_type ?? ''} onChange={(e) => updateField('setup_type', e.target.value)} />
         <Input label="Timeframe" value={trade.timeframe ?? ''} onChange={(e) => updateField('timeframe', e.target.value)} />
       </div>
 
@@ -93,18 +104,6 @@ export const TradeForm = ({ strategies, initial, onSave, onCancel }: TradeFormPr
           value={trade.position_size ?? ''}
           onChange={(e) => updateField('position_size', parseNumber(e.target.value))}
         />
-        <Input
-          label="Risk per Trade"
-          type="number"
-          value={trade.risk_per_trade ?? ''}
-          onChange={(e) => updateField('risk_per_trade', parseNumber(e.target.value))}
-        />
-        <Input
-          label="Risk Reward Ratio"
-          type="number"
-          value={trade.rr_ratio ?? ''}
-          onChange={(e) => updateField('rr_ratio', parseNumber(e.target.value))}
-        />
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
@@ -119,63 +118,94 @@ export const TradeForm = ({ strategies, initial, onSave, onCancel }: TradeFormPr
           <option value="Loss">Loss</option>
           <option value="Breakeven">Breakeven</option>
         </Select>
-        <Select
-          label="Emotional State"
-          value={trade.emotional_state ?? ''}
-          onChange={(e) => updateField('emotional_state', e.target.value)}
-        >
-          <option value="">Not set</option>
-          <option value="Calm">Calm</option>
-          <option value="Fear">Fear</option>
-          <option value="FOMO">FOMO</option>
-          <option value="Overconfidence">Overconfidence</option>
-        </Select>
-        <Select
-          label="Rule Followed"
-          value={trade.rule_followed === null || trade.rule_followed === undefined ? '' : trade.rule_followed ? 'yes' : 'no'}
-          onChange={(e) => updateField('rule_followed', e.target.value === '' ? null : e.target.value === 'yes')}
-        >
-          <option value="">Not set</option>
-          <option value="yes">Yes</option>
-          <option value="no">No</option>
-        </Select>
-        <Input
-          label="Mistake Category"
-          value={trade.mistake_category ?? ''}
-          onChange={(e) => updateField('mistake_category', e.target.value)}
-          placeholder="entered early, no stop loss"
-        />
       </div>
 
       <ChipInput label="Tags" values={tags} onChange={setTags} placeholder="breakout, pullback, fomo" />
 
+      {error ? <p className="text-sm text-red-400">{error}</p> : null}
+
       <div className="grid gap-4 sm:grid-cols-2">
-        <Textarea
-          label="Pre-trade reasoning"
-          value={trade.pre_trade_reasoning ?? ''}
-          onChange={(e) => updateField('pre_trade_reasoning', e.target.value)}
-        />
         <Textarea
           label="Post-trade reflection"
           value={trade.post_trade_reflection ?? ''}
           onChange={(e) => updateField('post_trade_reflection', e.target.value)}
         />
         <Textarea
-          label="What went right"
-          value={trade.what_went_right ?? ''}
-          onChange={(e) => updateField('what_went_right', e.target.value)}
-        />
-        <Textarea
-          label="What went wrong"
-          value={trade.what_went_wrong ?? ''}
-          onChange={(e) => updateField('what_went_wrong', e.target.value)}
-        />
-        <Textarea
-          label="Lessons learned"
-          value={trade.lessons_learned ?? ''}
-          onChange={(e) => updateField('lessons_learned', e.target.value)}
+          label="Notes"
+          value={trade.pre_trade_reasoning ?? ''}
+          onChange={(e) => updateField('pre_trade_reasoning', e.target.value)}
         />
       </div>
+
+      <div className="flex items-center justify-between rounded-2xl border border-bg-700/70 bg-bg-900/50 px-4 py-3 text-sm text-slate-300">
+        <div>
+          <p className="text-slate-100">Advanced fields</p>
+          <p className="text-xs text-slate-500">Psychology, risk, and detailed review fields.</p>
+        </div>
+        <Button variant="secondary" type="button" onClick={() => setShowAdvanced((prev) => !prev)}>
+          {showAdvanced ? 'Hide' : 'Show'}
+        </Button>
+      </div>
+
+      {showAdvanced ? (
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          <Input label="Trade ID" value={trade.trade_code ?? ''} onChange={(e) => updateField('trade_code', e.target.value)} />
+          <Input label="Setup Type" value={trade.setup_type ?? ''} onChange={(e) => updateField('setup_type', e.target.value)} />
+          <Input
+            label="Risk per Trade"
+            type="number"
+            value={trade.risk_per_trade ?? ''}
+            onChange={(e) => updateField('risk_per_trade', parseNumber(e.target.value))}
+          />
+          <Input
+            label="Risk Reward Ratio"
+            type="number"
+            value={trade.rr_ratio ?? ''}
+            onChange={(e) => updateField('rr_ratio', parseNumber(e.target.value))}
+          />
+          <Select
+            label="Emotional State"
+            value={trade.emotional_state ?? ''}
+            onChange={(e) => updateField('emotional_state', e.target.value)}
+          >
+            <option value="">Not set</option>
+            <option value="Calm">Calm</option>
+            <option value="Fear">Fear</option>
+            <option value="FOMO">FOMO</option>
+            <option value="Overconfidence">Overconfidence</option>
+          </Select>
+          <Select
+            label="Rule Followed"
+            value={trade.rule_followed === null || trade.rule_followed === undefined ? '' : trade.rule_followed ? 'yes' : 'no'}
+            onChange={(e) => updateField('rule_followed', e.target.value === '' ? null : e.target.value === 'yes')}
+          >
+            <option value="">Not set</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </Select>
+          <Input
+            label="Mistake Category"
+            value={trade.mistake_category ?? ''}
+            onChange={(e) => updateField('mistake_category', e.target.value)}
+            placeholder="entered early, no stop loss"
+          />
+          <Textarea
+            label="What went right"
+            value={trade.what_went_right ?? ''}
+            onChange={(e) => updateField('what_went_right', e.target.value)}
+          />
+          <Textarea
+            label="What went wrong"
+            value={trade.what_went_wrong ?? ''}
+            onChange={(e) => updateField('what_went_wrong', e.target.value)}
+          />
+          <Textarea
+            label="Lessons learned"
+            value={trade.lessons_learned ?? ''}
+            onChange={(e) => updateField('lessons_learned', e.target.value)}
+          />
+        </div>
+      ) : null}
 
       <div className="flex justify-end gap-3">
         <Button variant="ghost" type="button" onClick={onCancel}>

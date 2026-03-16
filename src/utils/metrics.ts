@@ -1,9 +1,21 @@
 import type { Trade } from '../types'
 
-export const formatCurrency = (value: number) => {
+const getCurrency = () => {
+  if (typeof window === 'undefined') return 'USD'
+  try {
+    const raw = window.localStorage.getItem('tradelab-settings')
+    if (!raw) return 'USD'
+    const parsed = JSON.parse(raw) as { currency?: string }
+    return parsed.currency || 'USD'
+  } catch {
+    return 'USD'
+  }
+}
+
+export const formatCurrency = (value: number, currency = getCurrency()) => {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency: 'USD',
+    currency,
     maximumFractionDigits: 2,
   }).format(value)
 }
