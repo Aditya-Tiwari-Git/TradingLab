@@ -46,9 +46,9 @@ export const Notes = () => {
       <TopBar title="Learning Notes" subtitle="Capture trading insights and lessons." />
       <Card>
         <div className="grid gap-4 md:grid-cols-3">
-          <Input label="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
+          <Input label="Title" required value={title} onChange={(e) => setTitle(e.target.value)} />
           <Input label="Tags (comma separated)" value={tags} onChange={(e) => setTags(e.target.value)} />
-          <Textarea label="Content" value={content} onChange={(e) => setContent(e.target.value)} />
+          <Textarea label="Content" required value={content} onChange={(e) => setContent(e.target.value)} />
         </div>
         <div className="mt-4 flex justify-end">
           <Button onClick={handleAdd}>Add Note</Button>

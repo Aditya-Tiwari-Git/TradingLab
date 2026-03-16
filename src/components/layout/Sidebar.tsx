@@ -6,12 +6,15 @@ import {
   LayoutDashboard,
   NotebookPen,
   PieChart,
+  Calculator,
   Radar,
   Settings,
+  HelpCircle,
   Target,
   TrendingUp,
   ChevronLeft,
   ChevronRight,
+  Mail,
 } from 'lucide-react'
 import { useAuth } from '../../hooks/useAuth'
 import clsx from 'clsx'
@@ -26,8 +29,10 @@ const navItems = [
   { to: '/watchlist', label: 'Watchlist', icon: Target },
   { to: '/notes', label: 'Notes', icon: NotebookPen },
   { to: '/analytics', label: 'Analytics', icon: PieChart },
+  { to: '/calculator', label: 'Calculator', icon: Calculator },
+  { to: '/guide', label: 'Guide', icon: HelpCircle },
   { to: '/reports', label: 'Reports', icon: BarChart3 },
-  { to: '/settings', label: 'Settings', icon: Settings },
+  { to: '/settings', label: 'Customization', icon: Settings },
 ]
 
 interface SidebarProps {
@@ -43,8 +48,17 @@ export const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
       initial={false}
       animate={{ width: collapsed ? 86 : 280 }}
       transition={{ type: 'spring', stiffness: 260, damping: 30 }}
-      className="flex h-screen flex-col overflow-y-auto border-r border-bg-700/70 bg-bg-900/80 px-4 py-6 backdrop-blur"
+      className="relative flex h-screen flex-col overflow-y-auto overflow-x-visible border-r border-bg-700/70 bg-bg-900/80 px-4 py-6 backdrop-blur"
     >
+      {collapsed ? (
+        <button
+          onClick={onToggle}
+          className="absolute -right-3 top-24 flex h-8 w-8 items-center justify-center rounded-full border border-bg-700/70 bg-bg-900/80 text-slate-400 shadow-card transition hover:border-accent-400/60 hover:text-slate-100"
+          aria-label="Expand sidebar"
+        >
+          <ChevronRight size={16} />
+        </button>
+      ) : null}
       <div className="mb-8 flex items-center justify-between">
         <div className={clsx('flex items-center gap-3', collapsed && 'justify-center w-full')}>
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent-500/20 text-accent-300">
@@ -85,6 +99,13 @@ export const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
           <ChevronRight size={16} />
           Expand
         </button>
+        <a
+          href="mailto:aditiw.work@gmail.com"
+          className="flex items-center justify-center gap-2 rounded-xl border border-bg-700/70 px-3 py-2 text-xs text-slate-400 transition hover:border-accent-400/60 hover:text-slate-200"
+        >
+          <Mail size={16} />
+          Contact Us
+        </a>
         <button
           onClick={() => signOut()}
           className="flex items-center justify-center gap-2 rounded-xl border border-bg-700/70 px-3 py-2 text-xs text-slate-400 transition hover:border-accent-400/60 hover:text-slate-200"

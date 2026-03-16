@@ -23,6 +23,11 @@
   --warning: 245 158 11;
   --info: 56 189 248;
   --muted: 148 163 184;
+  --chart-primary: 99 102 241;
+  --chart-secondary: 56 189 248;
+  --chart-tertiary: 34 197 94;
+  --chart-danger: 239 68 68;
+  --chart-grid: 51 65 85;
 }
 
 html {
@@ -46,6 +51,11 @@ html.light {
   --warning: 245 158 11;
   --info: 56 189 248;
   --muted: 100 116 139;
+  --chart-primary: 37 99 235;
+  --chart-secondary: 14 165 233;
+  --chart-tertiary: 34 197 94;
+  --chart-danger: 239 68 68;
+  --chart-grid: 203 213 225;
 }
 
 * {
@@ -200,4 +210,25 @@ html.light .text-slate-500 {
 
 html.light .text-slate-600 {
   color: #94a3b8;
+}
+
+.sidebar-item {
+  position: relative;
+}
+
+html.light .sidebar-item {
+  color: #334155;
+}
+
+html.light .sidebar-item:hover {
+  background: rgba(37, 99, 235, 0.08);
+  color: #0f172a;
+}
+
+html.light .sidebar-icon {
+  color: #64748b;
+}
+
+html.light .sidebar-item:hover .sidebar-icon {
+  color: rgb(var(--accent-500));
 }

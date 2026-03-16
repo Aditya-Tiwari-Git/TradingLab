@@ -1,4 +1,4 @@
-﻿import { useState } from 'react'
+import { useId, useState } from 'react'
 import { Button } from './Button'
 
 interface ChipInputProps {
@@ -6,10 +6,14 @@ interface ChipInputProps {
   values: string[]
   onChange: (values: string[]) => void
   placeholder?: string
+  hint?: string
+  suggestions?: string[]
 }
 
-export const ChipInput = ({ label, values, onChange, placeholder }: ChipInputProps) => {
+export const ChipInput = ({ label, values, onChange, placeholder, hint, suggestions = [] }: ChipInputProps) => {
   const [input, setInput] = useState('')
+  const datalistId = useId()
+  const tooltip = hint ?? label ?? placeholder
 
   const addChip = () => {
     const value = input.trim()
@@ -24,8 +28,12 @@ export const ChipInput = ({ label, values, onChange, placeholder }: ChipInputPro
   }
 
   return (
-    <div className="flex flex-col gap-2 text-sm text-slate-300">
-      {label ? <span className="text-xs uppercase tracking-wide text-slate-500">{label}</span> : null}
+    <div className="flex flex-col gap-2 text-sm text-slate-300" title={tooltip}>
+      {label ? (
+        <span className="text-xs uppercase tracking-wide text-slate-500" title={tooltip}>
+          {label}
+        </span>
+      ) : null}
       <div className="flex flex-wrap gap-2">
         {values.map((chip) => (
           <span key={chip} className="flex items-center gap-2 rounded-full border border-bg-700/70 bg-bg-900/60 px-3 py-1 text-xs">
@@ -48,7 +56,16 @@ export const ChipInput = ({ label, values, onChange, placeholder }: ChipInputPro
           }}
           placeholder={placeholder}
           className="flex-1 rounded-xl border border-bg-700/80 bg-bg-900/70 px-3 py-2 text-sm text-slate-200 outline-none transition focus:border-accent-400 focus:ring-2 focus:ring-accent-400/30 hover:border-bg-600"
+          title={tooltip}
+          list={suggestions.length ? datalistId : undefined}
         />
+        {suggestions.length ? (
+          <datalist id={datalistId}>
+            {suggestions.map((suggestion) => (
+              <option key={suggestion} value={suggestion} />
+            ))}
+          </datalist>
+        ) : null}
         <Button type="button" variant="secondary" onClick={addChip}>
           Add
         </Button>

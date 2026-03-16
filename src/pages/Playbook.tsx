@@ -47,7 +47,7 @@ export const Playbook = () => {
       <TopBar title="Trade Playbook" subtitle="Create setup templates and checklists." />
       <Card>
         <div className="grid gap-4 md:grid-cols-3">
-          <Input label="Setup Name" value={name} onChange={(e) => setName(e.target.value)} />
+          <Input label="Setup Name" required value={name} onChange={(e) => setName(e.target.value)} />
           <Textarea label="Rules" value={rules} onChange={(e) => setRules(e.target.value)} />
           <Textarea label="Checklist (comma separated)" value={checklist} onChange={(e) => setChecklist(e.target.value)} />
         </div>

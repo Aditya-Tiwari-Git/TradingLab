@@ -42,7 +42,7 @@ export const Watchlist = () => {
       <TopBar title="Watchlist" subtitle="Track assets you are watching." />
       <Card>
         <div className="grid gap-4 md:grid-cols-3">
-          <Input label="Asset Name" value={assetName} onChange={(e) => setAssetName(e.target.value)} />
+          <Input label="Asset Name" required value={assetName} onChange={(e) => setAssetName(e.target.value)} />
           <Textarea label="Notes" value={notes} onChange={(e) => setNotes(e.target.value)} />
           <Textarea label="Reason" value={reason} onChange={(e) => setReason(e.target.value)} />
         </div>

@@ -46,7 +46,7 @@ export const Strategies = () => {
       <TopBar title="Strategies" subtitle="Define and review your trading strategies." />
       <Card>
         <div className="grid gap-4 md:grid-cols-3">
-          <Input label="Strategy Name" value={name} onChange={(e) => setName(e.target.value)} />
+          <Input label="Strategy Name" required value={name} onChange={(e) => setName(e.target.value)} />
           <Textarea label="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
           <Textarea label="Rules" value={rules} onChange={(e) => setRules(e.target.value)} />
         </div>

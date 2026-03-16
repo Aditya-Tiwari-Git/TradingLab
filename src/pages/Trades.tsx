@@ -174,12 +174,12 @@ export const Trades = () => {
                 </div>
                 <div>
                   <p className="text-xs text-slate-500">Timeframe</p>
-                  <p className="text-slate-100">{selectedTrade.timeframe ?? '—'}</p>
+                  <p className="text-slate-100">{selectedTrade.timeframe ?? '--'}</p>
                 </div>
                 <div>
                   <p className="text-xs text-slate-500">Strategy</p>
                   <p className="text-slate-100">
-                    {strategies.find((strategy) => strategy.id === selectedTrade.strategy_id)?.name ?? '—'}
+                    {strategies.find((strategy) => strategy.id === selectedTrade.strategy_id)?.name ?? '--'}
                   </p>
                 </div>
               </div>
@@ -218,3 +218,4 @@ export const Trades = () => {
     </AppShell>
   )
 }
+

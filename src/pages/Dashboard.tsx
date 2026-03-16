@@ -60,7 +60,7 @@ export const Dashboard = () => {
             <MetricCard label="Total Trades" value={String(totalTrades)} icon={Activity} />
             <MetricCard label="Win Rate" value={`${formatNumber(winRateValue, 1)}%`} icon={Percent} tone="info" />
             <MetricCard label="Total PnL" value={formatCurrency(profitLoss)} icon={DollarSign} tone={profitLoss >= 0 ? 'success' : 'danger'} />
-            <MetricCard label="Profit Factor" value={pf === Infinity ? '∞' : formatNumber(pf, 2)} icon={TrendingUp} />
+            <MetricCard label="Profit Factor" value={pf === Infinity ? 'INF' : formatNumber(pf, 2)} icon={TrendingUp} />
             <MetricCard label="Average R:R" value={formatNumber(avgRR, 2)} icon={Target} />
           </section>
 
@@ -119,3 +119,4 @@ export const Dashboard = () => {
     </AppShell>
   )
 }
+

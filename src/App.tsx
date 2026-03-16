@@ -14,6 +14,8 @@ import { Analytics } from './pages/Analytics'
 import { Checklist } from './pages/Checklist'
 import { Reports } from './pages/Reports'
 import { Settings } from './pages/Settings'
+import { Calculator } from './pages/Calculator'
+import { Guide } from './pages/Guide'
 
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   const { user, loading } = useAuth()
@@ -116,6 +118,22 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute>
             <Reports />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/calculator"
+        element={
+          <ProtectedRoute>
+            <Calculator />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/guide"
+        element={
+          <ProtectedRoute>
+            <Guide />
           </ProtectedRoute>
         }
       />

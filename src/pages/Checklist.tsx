@@ -43,19 +43,22 @@ export const Checklist = () => {
       <TopBar title="Daily Checklist" subtitle="Stay consistent with your routine." />
       <Card>
         <div className="flex flex-wrap gap-3">
-          <Input label="Date" type="date" value={date} onChange={(e) => setDate(e.target.value)} />
-          <label className="flex flex-col gap-1 text-sm text-slate-300">
-            <span className="text-xs uppercase tracking-wide text-slate-500">Section</span>
+          <Input label="Date" type="date" required value={date} onChange={(e) => setDate(e.target.value)} />
+          <label className="flex flex-col gap-1 text-sm text-slate-300" title="Checklist section">
+            <span className="text-xs uppercase tracking-wide text-slate-500" title="Checklist section">
+              Section
+            </span>
             <select
               value={section}
               onChange={(e) => setSection(e.target.value as 'Pre Market' | 'Post Market')}
               className="rounded-xl border border-bg-700/80 bg-bg-900/70 px-3 py-2 text-sm text-slate-200"
+              title="Checklist section"
             >
               <option value="Pre Market">Pre Market</option>
               <option value="Post Market">Post Market</option>
             </select>
           </label>
-          <Input label="Task" value={text} onChange={(e) => setText(e.target.value)} />
+          <Input label="Task" required value={text} onChange={(e) => setText(e.target.value)} />
           <div className="flex items-end">
             <Button onClick={handleAdd}>Add Task</Button>
           </div>

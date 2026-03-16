@@ -1,17 +1,27 @@
-﻿import { Pie, PieChart, Cell, ResponsiveContainer, Tooltip } from 'recharts'
+import { Pie, PieChart, Cell, ResponsiveContainer, Tooltip } from 'recharts'
+import { useSettings } from '../../hooks/useSettings'
 
-const COLORS = ['#10b981', '#ef4444', '#f59e0b']
+const COLORS = ['rgb(var(--chart-tertiary))', 'rgb(var(--chart-danger))', 'rgb(var(--warning))']
 
 export const WinLossPie = ({ data }: { data: { name: string; value: number }[] }) => {
+  const { settings } = useSettings()
   return (
     <div className="h-64">
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
-          <Tooltip
-            contentStyle={{ background: '#0b1220', border: '1px solid #1f2a44', borderRadius: '8px' }}
-            labelStyle={{ color: '#94a3b8' }}
-          />
-          <Pie data={data} dataKey="value" nameKey="name" innerRadius={60} outerRadius={90} paddingAngle={4}>
+          {settings.showTooltips ? (
+            <Tooltip
+              contentStyle={{
+                background: 'rgba(var(--bg-900), 0.96)',
+                border: '1px solid rgba(var(--bg-700), 0.7)',
+                borderRadius: '10px',
+                color: '#e2e8f0',
+              }}
+              labelStyle={{ color: 'rgb(var(--muted))', fontSize: 12 }}
+              itemStyle={{ color: '#e2e8f0' }}
+            />
+          ) : null}
+          <Pie data={data} dataKey="value" nameKey="name" innerRadius={60} outerRadius={92} paddingAngle={4}>
             {data.map((_, index) => (
               <Cell key={index} fill={COLORS[index % COLORS.length]} />
             ))}

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useSettings } from './useSettings'
 
 type Theme = 'dark' | 'light'
 
@@ -13,12 +14,22 @@ const getInitialTheme = (): Theme => {
 }
 
 export const useTheme = () => {
-  const [theme, setTheme] = useState<Theme>(getInitialTheme)
+  const { settings, updateSettings } = useSettings()
+  const [theme, setTheme] = useState<Theme>(settings.theme ?? getInitialTheme)
+
+  useEffect(() => {
+    if (settings.theme && settings.theme !== theme) {
+      setTheme(settings.theme)
+    }
+  }, [settings.theme])
 
   useEffect(() => {
     const root = document.documentElement
     root.classList.toggle('light', theme === 'light')
     window.localStorage.setItem(THEME_KEY, theme)
+    if (settings.theme !== theme) {
+      updateSettings({ theme })
+    }
   }, [theme])
 
   const toggleTheme = () => setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'))

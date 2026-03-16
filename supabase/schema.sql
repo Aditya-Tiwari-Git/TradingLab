@@ -121,6 +121,13 @@ create table if not exists daily_checklist (
   created_at timestamptz default now()
 );
 
+create table if not exists user_settings (
+  user_id uuid primary key references auth.users(id) on delete cascade,
+  settings jsonb not null default '{}'::jsonb,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
 create index if not exists trades_user_date_idx on trades(user_id, date);
 create index if not exists trades_user_strategy_idx on trades(user_id, strategy_id);
 create index if not exists trades_user_result_idx on trades(user_id, result);
@@ -149,6 +156,21 @@ alter table notes enable row level security;
 alter table watchlist enable row level security;
 alter table playbook_setups enable row level security;
 alter table daily_checklist enable row level security;
+alter table user_settings enable row level security;
+
+-- Drop existing policies if they exist
+drop policy if exists "Users can manage own strategies" on strategies;
+drop policy if exists "Users can manage own mistakes" on mistakes;
+drop policy if exists "Users can manage own trades" on trades;
+drop policy if exists "Users can manage own tags" on tags;
+drop policy if exists "Users can manage own trade tags" on trade_tags;
+drop policy if exists "Users can manage own trade links" on trade_links;
+drop policy if exists "Users can manage own trade images" on trade_images;
+drop policy if exists "Users can manage own notes" on notes;
+drop policy if exists "Users can manage own watchlist" on watchlist;
+drop policy if exists "Users can manage own playbook" on playbook_setups;
+drop policy if exists "Users can manage own checklist" on daily_checklist;
+drop policy if exists "Users can manage own settings" on user_settings;
 
 create policy "Users can manage own strategies" on strategies
   for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
@@ -181,4 +203,7 @@ create policy "Users can manage own playbook" on playbook_setups
   for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
 
 create policy "Users can manage own checklist" on daily_checklist
+  for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+
+create policy "Users can manage own settings" on user_settings
   for all using (auth.uid() = user_id) with check (auth.uid() = user_id);

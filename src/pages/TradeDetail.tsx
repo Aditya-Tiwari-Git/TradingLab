@@ -97,39 +97,39 @@ export const TradeDetail = () => {
             </div>
             <div>
               <p className="text-xs text-slate-500">Timeframe</p>
-              <p>{trade.timeframe ?? '—'}</p>
+              <p>{trade.timeframe ?? '--'}</p>
             </div>
             <div>
               <p className="text-xs text-slate-500">Entry</p>
-              <p>{trade.entry_price ?? '—'}</p>
+              <p>{trade.entry_price ?? '--'}</p>
             </div>
             <div>
               <p className="text-xs text-slate-500">Exit</p>
-              <p>{trade.exit_price ?? '—'}</p>
+              <p>{trade.exit_price ?? '--'}</p>
             </div>
             <div>
               <p className="text-xs text-slate-500">Stop</p>
-              <p>{trade.stop_loss ?? '—'}</p>
+              <p>{trade.stop_loss ?? '--'}</p>
             </div>
             <div>
               <p className="text-xs text-slate-500">Position Size</p>
-              <p>{trade.position_size ?? '—'}</p>
+              <p>{trade.position_size ?? '--'}</p>
             </div>
             <div>
               <p className="text-xs text-slate-500">Risk / Trade</p>
-              <p>{trade.risk_per_trade ?? '—'}</p>
+              <p>{trade.risk_per_trade ?? '--'}</p>
             </div>
             <div>
               <p className="text-xs text-slate-500">R:R</p>
-              <p>{trade.rr_ratio ?? '—'}</p>
+              <p>{trade.rr_ratio ?? '--'}</p>
             </div>
             <div>
               <p className="text-xs text-slate-500">Emotional State</p>
-              <p>{trade.emotional_state || '—'}</p>
+              <p>{trade.emotional_state || '--'}</p>
             </div>
             <div>
               <p className="text-xs text-slate-500">Rule Followed</p>
-              <p>{trade.rule_followed === null || trade.rule_followed === undefined ? '—' : trade.rule_followed ? 'Yes' : 'No'}</p>
+              <p>{trade.rule_followed === null || trade.rule_followed === undefined ? '--' : trade.rule_followed ? 'Yes' : 'No'}</p>
             </div>
             <div className="sm:col-span-2">
               <p className="text-xs text-slate-500">Profit / Loss</p>
@@ -150,23 +150,23 @@ export const TradeDetail = () => {
           <div className="mt-4 space-y-3 text-sm text-slate-300">
             <div>
               <p className="text-xs text-slate-500">Pre-trade reasoning</p>
-              <p>{trade.pre_trade_reasoning || '—'}</p>
+              <p>{trade.pre_trade_reasoning || '--'}</p>
             </div>
             <div>
               <p className="text-xs text-slate-500">Post-trade reflection</p>
-              <p>{trade.post_trade_reflection || '—'}</p>
+              <p>{trade.post_trade_reflection || '--'}</p>
             </div>
             <div>
               <p className="text-xs text-slate-500">What went right</p>
-              <p>{trade.what_went_right || '—'}</p>
+              <p>{trade.what_went_right || '--'}</p>
             </div>
             <div>
               <p className="text-xs text-slate-500">What went wrong</p>
-              <p>{trade.what_went_wrong || '—'}</p>
+              <p>{trade.what_went_wrong || '--'}</p>
             </div>
             <div>
               <p className="text-xs text-slate-500">Lessons learned</p>
-              <p>{trade.lessons_learned || '—'}</p>
+              <p>{trade.lessons_learned || '--'}</p>
             </div>
           </div>
         </Card>
@@ -214,3 +214,4 @@ export const TradeDetail = () => {
     </AppShell>
   )
 }
+

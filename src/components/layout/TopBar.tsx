@@ -1,4 +1,4 @@
-import { Bell, Search, Plus, ChevronDown, Sun, Moon } from 'lucide-react'
+import { Bell, Search, Plus, ChevronDown, Sun, Moon, Mail } from 'lucide-react'
 import clsx from 'clsx'
 import { useTheme } from '../../hooks/useTheme'
 
@@ -40,6 +40,13 @@ export const TopBar = ({ title, subtitle, onQuickAdd }: TopBarProps) => {
           <button className="rounded-full border border-bg-700/70 bg-bg-900/60 p-2 text-slate-400 shadow-card hover:text-slate-200">
             <Bell size={16} />
           </button>
+          <a
+            href="mailto:aditiw.work@gmail.com"
+            className="rounded-full border border-bg-700/70 bg-bg-900/60 p-2 text-slate-400 shadow-card hover:text-slate-200"
+            aria-label="Contact support"
+          >
+            <Mail size={16} />
+          </a>
           <button
             onClick={toggleTheme}
             className="rounded-full border border-bg-700/70 bg-bg-900/60 p-2 text-slate-400 shadow-card hover:text-slate-200"
